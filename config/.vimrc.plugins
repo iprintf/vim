@@ -216,7 +216,7 @@ let tlist_actionscript_settings = 'actionscript;c:class;f:method;p:property;v:va
 " ---------------------------------------------------
 " DISABLE: use tlist instead
 " " exvim/ex-tagbar: invoke by <F4>
-" 当前文件的标签浏览
+" 当前文件的标签浏览 taglist的替代品
 " 未测试 默认使用taglist
 " ---------------------------------------------------
 "  {
@@ -904,3 +904,4 @@ Plugin 'plasticboy/vim-markdown'
 
 let g:vim_markdown_initial_foldlevel=9999
 "  }
+"
