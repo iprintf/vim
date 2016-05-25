@@ -1,0 +1,34 @@
+" -----------------------------------------------------------------------------
+"  公共函数
+" -----------------------------------------------------------------------------
+"获取当前文件名
+function! GetFileName()
+    return bufname(winbufnr(winnr()))  "获取当前窗口缓冲区的名字
+endfunction
+
+"获取当前时间，精确到分
+function! GetDateTime()
+    return strftime("%Y-%m-%d %H:%M")
+endfunction
+
+" -----------------------------------------------------------------------------
+"  其它
+" -----------------------------------------------------------------------------
+
+"打印当前日期
+nnoremap ,date  i<C-R>=strftime("%Y-%m-%d")<ESC>:<CR>
+"nnoremap ,date :r!date +\%Y-\%m-\%d:<CR>
+
+"打印当前路径
+if (g:islinux)
+    nnoremap ,pwd i<C-R>=getcwd().'/'.GetFileName()<ESC><CR>
+else
+    nnoremap ,pwd i<C-R>=getcwd().'\'.GetFileName()<ESC><CR>
+endif
+
+"自动给函数加括号
+let @q="o{}ioj"
+
+"javacomplete 自己写的脚本自动编译或运行java程序
+nnoremap ,jr :! clear && jvr <C-R>=GetFileName()<CR><CR>
+

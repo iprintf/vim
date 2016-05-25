@@ -1,0 +1,29 @@
+#!/bin/bash
+
+install_dir=~/.kyo
+
+function err_exit()
+{
+    echo $1
+    exit 1
+}
+
+! vim --version | grep 7.4 &> /dev/null \
+        && err_exit "没有安装vim或vim版本不是7.4"
+
+test -e ~/.vimrc -o -e ~/.vimrc.local -o -e ~/.vim -o -e ~/.vim.plugins \
+    && tar -cf ~/kyo_old_vim_$(date +%m%d%H%M%S).tar ~/.vim* &> /dev/null
+
+rm ~/.vim* -rf &> /dev/null
+
+test ! -e $install_dir && mkdir $install_dir
+
+test -e $install_dir/vim && rm $install_dir/vim -rf
+
+/bin/cp config $install_dir/vim -rf || err_exit "安装失败"
+
+ln -s $install_dir/vim/.vim ~/.vim
+ln -s $install_dir/vim/.vimrc ~/.vimrc
+ln -s $install_dir/vim/.vimrc.local ~/.vimrc.local
+ln -s $install_dir/vim/.vimrc.plugins ~/.vimrc.plugins
+

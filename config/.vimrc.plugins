@@ -1,0 +1,906 @@
+" Pathogen or Vundle (deafult is Vundle) {{{
+" 插件管理嚣 Pathogen 和 Vundle 默认使用Vundle
+
+" Comment-out if you want to use pahogen
+" Pathogen插件使用配置
+" execute pathogen#infect()
+" com! -nargs=+ Bundle
+
+" ---------------------------------------------------
+" man.vim: invoked by :Man {name}
+" 分屏显示man手册 用法：Man string
+" ---------------------------------------------------
+source $VIMRUNTIME/ftplugin/man.vim
+"设置快捷键得到光标所在位置的man手册并且分屏显示
+nnoremap ,K :Man <C-R>=expand("<cword>")<CR><CR>
+
+" ---------------------------------------------------
+" let Vundle manage Vundle, required
+" vim插件管理嚣
+" ---------------------------------------------------
+Plugin 'gmarik/vundle'
+
+"}}}  Vundle End
+
+"====================================================
+
+" ---------------------------------------------------
+" ex-config:
+" exvim项目 配置文件解析插件
+" ---------------------------------------------------
+"  {
+Plugin 'exvim/ex-config'
+nnoremap <unique> <leader>ve :call exconfig#edit_cur_vimentry ()<CR>
+"  }
+
+" ---------------------------------------------------
+" ex-utility:
+" ---------------------------------------------------
+"  {
+Plugin 'exvim/ex-utility'
+
+nnoremap <unique> <silent> <Leader>bd :EXbd<CR>
+nnoremap <unique> <silent> <C-l> :EXbn<CR>
+nnoremap <unique> <silent> <C-h> :EXbp<CR>
+nnoremap <unique> <silent> <C-Tab> :EXbalt<CR>
+nnoremap <unique> <silent> <Leader><Tab> :EXsw<CR>
+nmap <unique> <silent> <Leader><Esc> :EXgp<CR><ESC>
+"  }
+
+" ---------------------------------------------------
+" ex-aftercolor
+" exvim通过此插件动态更新配色
+" ---------------------------------------------------
+Plugin 'exvim/ex-aftercolors'
+
+" ---------------------------------------------------
+" ex-vimentry
+" exvim 创建和设置一个项目
+" ---------------------------------------------------
+Plugin 'exvim/ex-vimentry'
+
+" ---------------------------------------------------
+" ex-project
+" exvim 文件浏览器
+" ---------------------------------------------------
+Plugin 'exvim/ex-project'
+
+nnoremap ,exp   :EXProjectToggle<CR>
+
+" ---------------------------------------------------
+" ex-gsearch
+" exvim 全局搜索插件
+" ---------------------------------------------------
+"  {
+Plugin 'exvim/ex-gsearch'
+
+call exgsearch#register_hotkey( 100, 0, '<leader>gs', ":EXGSearchToggle<CR>", 'Toggle global search window.' )
+call exgsearch#register_hotkey( 101, 0, '<leader>gg', ":EXGSearchCWord<CR>", 'Search current word.' )
+call exgsearch#register_hotkey( 102, 0, '<leader><S-f>', ":GS ", 'Shortcut for :GS' )
+"  }
+
+" ---------------------------------------------------
+" ex-tagselect
+" 查找符号 依赖ctags命令
+" exvim 查找符号
+" ---------------------------------------------------
+"  {
+Plugin 'exvim/ex-tags'
+
+call extags#register_hotkey( 100, 0, '<leader>ts', ":EXTagsToggle<CR>", 'Toggle tag select window.' )
+call extags#register_hotkey( 101, 0, '<leader>]', ":EXTagsCWord<CR>", 'Tag select current word.' )
+" DISABLE: nnoremap <unique> <leader>] :exec 'ts ' . expand('<cword>')<CR>
+"  }
+
+" ---------------------------------------------------
+" ex-symbol
+" exvim项目整合 查找符号
+" ---------------------------------------------------
+"  {
+Plugin 'exvim/ex-symbol'
+
+call exsymbol#register_hotkey( 100, 0, '<leader>ss', ":EXSymbolList<CR>", 'List all symbols.' )
+call exsymbol#register_hotkey( 101, 0, '<leader>sq', ":EXSymbolOpen<CR>", 'Open symbols window.' )
+call exsymbol#register_hotkey( 102, 0, '<leader>sg', ":EXSymbolCWord<CR>", 'List symbols contains current word.' )
+
+if has('gui_running')
+    if has ('mac')
+        call exsymbol#register_hotkey( 102, 0, 'Ò', ":EXSymbolList<CR>:redraw<CR>/", 'List all symbols and stay in search mode.' )
+    else
+        call exsymbol#register_hotkey( 102, 0, '<M-L>', ":EXSymbolList<CR>:redraw<CR>/", 'List all symbols and stay in search mode.' )
+    endif
+endif
+let g:ex_symbol_select_cmd = 'TS'
+
+"  }
+
+" ---------------------------------------------------
+" ex-cscope
+" 可以生成函数被什么函数调用 调用了哪些函数
+" ---------------------------------------------------
+"  {
+Plugin 'exvim/ex-cscope'
+
+call excscope#register_hotkey( 100, 0, '<leader>cd', ":EXCSToggle<CR>", 'Toggle cscope window.' )
+"  }
+
+" ---------------------------------------------------
+" ex-qfix
+" ---------------------------------------------------
+"  {
+Plugin 'exvim/ex-qfix'
+
+call exqfix#register_hotkey( 100, 0, '<leader>qf', ":EXQFixToggle<CR>", 'Toggle quickfix window.' )
+call exqfix#register_hotkey( 101, 0, '<leader>qq', ":EXQFixPaste<CR>", 'Open quickfix window and paste error list from register *.' )
+"  }
+
+" ---------------------------------------------------
+" ex-hierarchy
+" 导出类的继承图 exvim项目 未测试成功
+" ---------------------------------------------------
+"  {
+ Plugin 'exvim/ex-hierarchy'
+
+ nnoremap <unique> <leader>hv :EXHierarchyCWord<CR>
+"  }
+
+" ---------------------------------------------------
+" ex-taglist: invoke by <F8>
+" 高效地浏览源码, 其功能就像vc中的workpace
+" 那里面列出了当前文件中的所有宏,全局变量, 函数名等
+" ---------------------------------------------------
+"  {
+Plugin 'exvim/ex-taglist'
+
+" F8:  Switch on/off TagList
+nnoremap <unique> <silent> <F8> :TlistToggle<CR>
+
+
+"设定ctags程序路径
+"let Tlist_Ctags_Cmd = $VIM.'/vimfiles/ctags.exe'
+"不同时显示多个文件的tag，只显示当前文件的
+let Tlist_Show_One_File=1
+" if you are the last, kill yourself
+let Tlist_Exist_OnlyWindow = 1
+"如果taglist窗口是最后一个窗口，则退出vim
+let Tlist_Exit_OnlyWindow=1
+"在右侧窗口显示taglist窗口
+let Tlist_Use_Right_Window=1
+" sort by order or name
+let Tlist_Sort_Type="order"
+"使taglist插件不显示左边的折叠行
+let Tlist_Enable_Fold_Column = 0
+"单击tag就跳转
+let Tlist_Use_SingleClick=1
+"启动VIM自动打开taglist
+"let Tlist_Auto_Open=1
+"选择tag后自动关闭taglist
+let Tlist_Close_On_Select = 0 " Close the taglist window when a file or tag is selected.
+"多文件时只显示当前文件的tag，其它的tag折叠
+let Tlist_File_Fold_Auto_Close=1
+"taglist窗口高度
+" let Tlist_WinHeight=200
+"taglist窗口宽度
+let Tlist_WinWidth=40
+"设置taglist窗口横向显示
+"let Tlist_Use_Horiz_Window=1
+"
+"映射F8打开关闭taglist窗口 本人以前设置
+" map <expr> <F8> bufloaded("__Tag_List__")?"q":":TlistOpen\<cr>"
+"
+"do not show prototypes and not tags in the taglist window.
+let Tlist_Display_Prototype = 0
+"Remove extra information and blank lines from the taglist window.
+let Tlist_Compart_Format = 1
+"Jump to taglist window on open.
+let Tlist_GainFocus_On_ToggleOpen = 1
+"Show tag scope next to the tag name.
+let Tlist_Display_Tag_Scope = 1
+"If no close on select, let the user choose back to edit buffer or not
+let Tlist_BackToEditBuffer = 0
+"do not show help
+let Tlist_Compact_Format = 1
+" let Tlist_Ctags_Cmd = 'ctags --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++'
+" very slow, so I disable this
+" let Tlist_Process_File_Always = 1 " To use the :TlistShowTag and the :TlistShowPrototype commands without the taglist window and the taglist menu, you should set this variable to 1.
+":TlistShowPrototype [filename] [linenumber]
+
+" add javascript language
+let tlist_javascript_settings = 'javascript;v:global variable:0:0;c:class;p:property;m:method;f:function;r:object'
+" add hlsl shader language
+let tlist_hlsl_settings = 'c;d:macro;g:enum;s:struct;u:union;t:typedef;v:variable;f:function'
+" add actionscript language
+let tlist_actionscript_settings = 'actionscript;c:class;f:method;p:property;v:variable'
+"  }
+
+" ---------------------------------------------------
+" DISABLE: use tlist instead
+" " exvim/ex-tagbar: invoke by <F4>
+" 当前文件的标签浏览
+" 未测试 默认使用taglist
+" ---------------------------------------------------
+"  {
+" Plugin 'exvim/ex-tagbar'
+
+" nnoremap <unique> <silent> <F4> :TagbarToggle<CR>
+
+" let g:tagbar_sort = 0
+" let g:tagbar_map_preview = '<CR>'
+" if has('gui_running')
+"     let g:tagbar_map_close = '<Esc>'
+" else
+"     let g:tagbar_map_close = '<leader><Esc>'
+" endif
+" let g:tagbar_map_zoomwin = '<Space>'
+" let g:tagbar_zoomwidth = 80
+" let g:tagbar_autofocus = 1
+" let g:tagbar_iconchars = ['+', '-']
+
+" " use command ':TagbarGetTypeConfig lang' change your settings
+" let g:tagbar_type_javascript = {
+"     \ 'ctagsbin': 'ctags',
+"     \ 'kinds' : [
+"         \ 'v:global variables:0:0',
+"         \ 'c:classes',
+"         \ 'p:properties:0:0',
+"         \ 'm:methods',
+"         \ 'f:functions',
+"         \ 'r:object',
+"     \ ],
+" \ }
+" let g:tagbar_type_c = {
+"     \ 'kinds' : [
+"         \ 'd:macros:0:0',
+"         \ 'p:prototypes:0:0',
+"         \ 'g:enums',
+"         \ 'e:enumerators:0:0',
+"         \ 't:typedefs:0:0',
+"         \ 's:structs',
+"         \ 'u:unions',
+"         \ 'm:members:0:0',
+"         \ 'v:variables:0:0',
+"         \ 'f:functions',
+"     \ ],
+" \ }
+" let g:tagbar_type_cpp = {
+"     \ 'kinds' : [
+"         \ 'd:macros:0:0',
+"         \ 'p:prototypes:0:0',
+"         \ 'g:enums',
+"         \ 'e:enumerators:0:0',
+"         \ 't:typedefs:0:0',
+"         \ 'n:namespaces',
+"         \ 'c:classes',
+"         \ 's:structs',
+"         \ 'u:unions',
+"         \ 'f:functions',
+"         \ 'm:members:0:0',
+"         \ 'v:variables:0:0',
+"     \ ],
+" \ }
+"   }
+
+" ---------------------------------------------------
+" DISABLE: minibufexpl makes Vim editing slow when there are too many buffers opened
+"          if you don't mind, and love this plugin, uncomment the script below
+"          to enable it
+" ex-minibufexpl
+" 状态栏美化和设置
+" ---------------------------------------------------
+"  {
+" Plugin 'exvim/ex-minibufexpl'
+" let g:miniBufExplBuffersNeeded = 0
+" let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer.
+" let g:miniBufExplMaxSize = 1 " <max lines: default 0> setting this to 0 will mean the window gets as big as needed to fit all your buffers.
+" let g:miniBufExplTabWrap = 1
+" let g:miniBufExplDebugMode  = 3
+" let g:miniBufExplDebugLevel = 0
+"  }
+" ---------------------------------------------------
+" ex-autocomplpop: invoke when you input text
+" 代码自动补全
+" ---------------------------------------------------
+"Plugin 'exvim/ex-autocomplpop'
+
+" ---------------------------------------------------
+" ex-showmarks: invoke by m... or <leader>mm, <leader>ma
+" 显示书签标记
+" ---------------------------------------------------
+"  {
+Plugin 'exvim/ex-showmarks'
+
+" TODO: bootleq/ShowMarks on github is well organized in code, but have lots
+" bugs, consider merge his code and fixes the bugs
+let g:showmarks_enable = 1
+let g:showmarks_include = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+let g:showmarks_ignore_type = 'hqm' " Ignore help, quickfix, non-modifiable buffers
+" Hilight lower & upper marks
+let g:showmarks_hlline_lower = 1
+let g:showmarks_hlline_upper = 0
+
+"  }
+
+" ---------------------------------------------------
+" ex-visincr: invoke when select text and type ':II'
+" 按顺序自动填写数字 ctrl + v选择一段再:II 自动会把选择的替换成顺序的数字
+" ---------------------------------------------------
+" Plugin 'exvim/ex-visincr'
+
+" ---------------------------------------------------
+" ex-matchit: invoke by %
+" 增强%的功能 原有%只能在括号之间跳转 此插件让%可以在if/endif之间跳转等
+" ---------------------------------------------------
+Plugin 'exvim/ex-matchit'
+
+" ---------------------------------------------------
+" ex-easyhl:
+" 未测试 不知道能干吗
+" ---------------------------------------------------
+" Plugin 'exvim/ex-easyhl'
+
+" ---------------------------------------------------
+" searchcompl: invoke by /
+" 未测试  不知道能干吗
+" ---------------------------------------------------
+" Plugin 'exvim/ex-searchcompl'
+
+" ---------------------------------------------------
+" ex-colorschemes 配色方案
+" ---------------------------------------------------
+Plugin 'exvim/ex-colorschemes'
+
+" ---------------------------------------------------
+" vim-color-solarized  配色方案
+" ---------------------------------------------------
+Plugin 'altercation/vim-colors-solarized'
+
+" ---------------------------------------------------
+" DISABLE: vim-airline makes Vim editing slow when there are too many buffers opened
+"          if you don't mind, and love this plugin, uncomment the script below
+"          to enable it
+" vim-airline
+" 美化状态栏
+" ---------------------------------------------------
+"  {
+" Plugin 'bling/vim-airline'
+
+" if has('gui_running')
+"     let g:airline_powerline_fonts = 1
+" else
+"     let g:airline_powerline_fonts = 0
+" endif
+
+" NOTE: When you open lots of buffers and typing text, it is so slow.
+" let g:airline#extensions#tabline#enabled = 0
+" let g:airline#extensions#tabline#show_buffers = 1
+" let g:airline#extensions#tabline#buffer_nr_show = 1
+" let g:airline#extensions#tabline#fnamemod = ':t'
+" let g:airline_section_b = \"%{fnamemodify(bufname('%'),':p:.:h').'/'}"
+" let g:airline_section_c = '%t'
+" NOTE: airline#section#create has no effect in .vimrc initialize pahse
+" let g:airline_section_warning = airline#section#create(['whitespace'])
+" let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#whitespace#check(),0)}'
+" let g:airline_section_warning = ''
+"  }
+
+" ---------------------------------------------------
+" ctrlp: invoke by <ctrl-p>
+" 扩展ctrl+p 显示最近打开文件列表并且支持快速搜索
+" ---------------------------------------------------
+"  {
+Plugin 'kien/ctrlp.vim'
+let g:ctrlp_working_path_mode = ''
+let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:10,results:10'
+let g:ctrlp_follow_symlinks = 2
+let g:ctrlp_max_files = 0 " Unset cap of 10,000 files so we find everything
+nnoremap <unique> <leader>bs :CtrlPBuffer<CR>
+"  }
+
+" ---------------------------------------------------
+" vim-fugitive: invoke most by :Gdiff
+" 配合git操作 git托管 diff或者其它任务
+" DISABLE: I'm using GistBox https://app.gistboxapp.com/ instead
+" gist-vim: Invoke by :Gist
+" git操作功能
+" 未测试
+" ---------------------------------------------------
+" Plugin 'tpope/vim-fugitive'
+" Plugin 'mattn/webapi-vim'
+" Plugin 'mattn/gist-vim'
+
+"  Plugin 'kyo_git'
+"
+" ---------------------------------------------------
+" vim-surround: invoke when you select words and press 's'
+" 通过命令快速操作文本中的" ' [ ( {等符号
+" 未测试  功能很强大
+" http://blog.csdn.net/lalor/article/details/8095512
+" ---------------------------------------------------
+"  {
+" Plugin 'tpope/vim-surround'
+" xmap s <Plug>VSurround
+"  }
+
+" ---------------------------------------------------
+" DISABLE
+" 未测试 不知道能干吗?
+" ---------------------------------------------------
+" Plugin 'tpope/vim-dispatch'
+
+" ---------------------------------------------------
+" nerdtree: invoke by :NERDTreeToggle
+" 文件浏览器
+" ---------------------------------------------------
+"  {
+Plugin 'scrooloose/nerdtree'
+
+"让Tree把自己给装饰得多姿多彩些
+"let NERDChristmasTree=1
+"控制光标移动超过一定距离时，是否自动将焦点y调整到屏中心
+"let NERDTreeAutoCenter=1
+"与上面配合使用
+"let NERDTreeAutoCenterThreshold=1
+"排序时是否大小写敏感
+"let NERDTreeCaseSensitiveSort=1
+"是否高亮显示光标所在行
+"let NERDTreeHighlightCursorline=1
+"指写书签文件
+"let NERDTreeBookmarksFile='/root/vim/bookmark.txt'
+"指定鼠标模式：1为双击打开，3为单击打开，2为目录为单击打开，文件双击打开
+let NERDTreeMouseMode=2
+"打开文件后是否关闭NerdTree窗口
+"let NERDTreeQuitOnOpen=1
+"是否默认显示书签列表
+let NERDTreeShowBookmarks=1
+"是否默认显示文件
+let NERDTreeShowFiles=1
+"是否默认显示隐藏文件
+let NERDTreeShowHidden=1
+"是否默认显示行号
+"let NERDTreeShowLineNumbers=1
+"排序规则，这个就麻烦了，可以用正则表达式
+"let NERDTreeSortOrder=
+"窗口状态栏
+"let NERDTreeStatusline=
+"窗口位置（left or right）
+"let NERDTreeWinPos='right'
+"窗口宽
+let NERDTreeWinSize=30
+"文件浏览器放大快捷键设置
+let g:NERDTreeMapToggleZoom = '<Space>'
+
+"映射F7打开关闭NERDTree窗口
+imap <F7> <ESC>:NERDTreeToggle<CR>
+nmap <F7> :NERDTreeToggle<CR>
+
+"winnr()    获取当前窗口窗口ID
+"winbufnr(winnr())   获取当前窗口的缓冲区ID
+"bufname(winbufnr(winnr()))  获取当前窗口缓冲区的名字
+"strpart(bufname(winbufnr(winnr())), 10)   截取从缓冲区名字第10字符开始到结束
+" map <expr> <F7> bufloaded("NERD_tree_".strpart(bufname(winbufnr(winnr())),10))?"q":":NERDTree\<cr>"
+
+"  }
+
+" ---------------------------------------------------
+" nerdcommenter: invoke by <leader>c<space>, <leader>cl,
+"                   <leader>cu, <F11> or <C-F11>
+" 批量注释
+" ---------------------------------------------------
+"  {
+" 我主要用于C/C++代码注释(其它的也行)
+" 以下为插件默认快捷键，其中的说明是以C/C++为例的，其它语言类似
+" <Leader>ci 以每行一个 /* */ 注释选中行(选中区域所在行)，再输入则取消注释
+" <Leader>cc 以每行一个 /* */ 注释选中行或区域，再输入则称重复注释,  单行注释
+" <Leader>cu 取消选中区域(行)的注释，选中区域(行)内至少有一个 /* */  取消注释
+" <Leader>ca 在/*...*/与//这两种注释方式中切换, 单行注释符切换
+" <Leader>cA 行尾注释
+" <Leader>cs 批量注释
+Plugin 'scrooloose/nerdcommenter'
+
+"在左注释符之后，右注释符之前留有空格
+let g:NERDSpaceDelims = 1
+let g:NERDRemoveExtraSpaces = 1
+let g:NERDCustomDelimiters = {
+            \ 'vimentry': { 'left': '--' },
+            \ }
+"map <unique> <F11> <Plug>NERDCommenterAlignBoth
+"map <unique> <C-F11> <Plug>NERDCommenterUncomment
+"  }
+
+" ---------------------------------------------------
+" syntastic: invoke when you save file and have syntac-checker
+" 语法检查
+" ---------------------------------------------------
+"  {
+"Plugin 'scrooloose/syntastic'
+
+" this will make html file by Angular.js ignore errors
+"let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+"  }
+
+" ---------------------------------------------------
+" DISABLE: use ex-autocomplpop instead
+" " neocomplcache: invoke when you insert words
+" 关键字补全、文件路径补全、tag补全等等，各种，非常好用，速度超快。
+" ---------------------------------------------------
+"  {
+" Plugin 'Shougo/neocomplcache.vim'
+
+"vim 启动时启用插件
+" let g:neocomplcache_enable_at_startup = 1
+" let g:neocomplcache_auto_completion_start_length = 2
+" let g:neocomplcache_enable_smart_case = 1
+" let neocomplcache's completion behavior like AutoComplPop
+" let g:neocomplcache_enable_auto_select = 1
+" Enable this if you like TAB for complete
+"不自动弹出补全列表
+" let g:neocomplcache_disable_auto_complete = 1
+" inoremap <C-p> <C-x><C-u>
+" inoremap <expr><TAB>  pumvisible() ? '\<Down>' : '<TAB>'
+" inoremap <expr><S-TAB>  pumvisible() ? '\<Up>' : ''
+"
+" 在弹出补全列表后用 <c-p> 或 <c-n> 进行上下选择效果比较好
+"  }
+
+" ---------------------------------------------------
+" DISABLE: use ex-autocomplpop instead
+" " neocomplete: invoke when you insert words
+" 代码自动补全 neocomplcache的新版本，vim编译要加lua选项
+" 不是纯粹的vim脚本
+" ---------------------------------------------------
+"  {
+" Plugin 'Shougo/neocomplete.vim'
+
+" let g:neocomplete#enable_at_startup = 1
+" let g:neocomplete#enable_smart_case = 1
+" let g:neocomplete#enable_auto_select = 1 " let neocomplete's completion behavior like AutoComplPop
+" " Enable omni completion.
+" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"  }
+
+" ---------------------------------------------------
+" DISABLE: use ex-autocomplpop instead
+" " YouCompleteMe
+" 自动补全功能, 安装超级麻烦，需要编译
+" 代码自动补全 vim最快的补全插件 但也不是纯粹的vim脚本
+" 测试失败
+" ---------------------------------------------------
+"  {
+" Plugin 'Valloric/YouCompleteMe'
+"
+"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+"YCM跳转命令 <leader>为\
+"nnoremap <leader>jd :YcmCompeter GoToDefinitionElseDeclaration<CR>
+"  }
+
+" -----------------------------------------------------------------------------
+"  < ccvext.vim 插件配置 >
+" -----------------------------------------------------------------------------
+"  {
+" Plugin 'ccvext.vim'
+" 用于对指定文件自动生成tags与cscope文件并连接
+" 如果是Windows系统:
+"   则生成的文件在源文件所在盘符根目录的.symbs目录下 " (如: X:\.symbs\)
+" 如果是Linux系统:
+"   则生成的文件在~/.symbs/目录下
+" 具体用法可参考www.vim.org中此插件的说明
+" <Leader>sy 自动生成tags与cscope文件并连接
+" <Leader>sc 连接已存在的tags与cscope文件
+"  }
+
+" -----------------------------------------------------------------------------
+"  < indentLine 插件配置 >
+" -----------------------------------------------------------------------------
+"  {
+" Plugin 'indentLine'
+" 用于显示对齐线，与 indent_guides 在显示方式上不同，根据自己喜好选择了
+" 在终端上会有屏幕刷新的问题，这个问题能解决有更好了
+" 开启/关闭对齐线
+" nmap ,il :IndentLinesToggle<CR>
+
+" 设置Gvim的对齐线样式
+" if g:isGUI
+    " let g:indentLine_char = \"┊"
+    " let g:indentLine_first_char = \"┊"
+" endif
+
+" 设置终端对齐线颜色，如果不喜欢可以将其注释掉采用默认颜色
+" let g:indentLine_color_term = 239
+
+" 设置 GUI 对齐线颜色，如果不喜欢可以将其注释掉采用默认颜色
+" let g:indentLine_color_gui = '#A4E57E'
+"  }
+
+" -----------------------------------------------------------------------------
+"  < omnicppcomplete 插件配置 >
+" -----------------------------------------------------------------------------
+"  {
+" Plugin 'OmniCppComplete'
+" 用于C/C++代码补全，这种补全主要针对命名空间、类、结构、共同体等进行补全，详细
+" 说明可以参考帮助或网络教程等
+" 使用前先执行如下 ctags 命令（本配置中可以直接使用 ccvext 插件来执行以下命令）
+" ctags -R --c++-kinds=+p --fields=+iaS --extra=+q
+" 我使用上面的参数生成标签后，对函数使用跳转时会出现多个选择
+" 所以我就将--c++-kinds=+p参数给去掉了，如果大侠有什么其它解决方法希望不要保留呀
+" set completeopt=menu                        "关闭预览窗口
+" let OmniCpp_NamespaceSearch = 1
+" let OmniCpp_GlobalScopeSearch = 1
+" let OmniCpp_ShowAccess = 1
+" let OmniCpp_ShowPrototypeInAbbr = 1  "显示函数参数列表
+" let OmniCpp_MayCompleteDot = 1       "输入 . 后自动补全
+" let OmniCpp_MayCompleteArrow = 1    "输入 -> 后自动补全
+" let OmniCpp_MayCompleteScope = 1    "输入 :: 后自动补全
+" let OmniCpp_DefaultNamespaces = ["std"]
+" let OmniCpp_SelectFirstItem = 2
+" let OmniCpp_DisplayMode = 1
+
+"Pmenu为所有项 PmenuSel为选择项  guibg guifg 背景色 前景色
+"highlight Pmenu guibg=darkgrey guifg=black
+" highlight PmenuSel guibg=#000000 guifg=#ffffff
+"  }
+
+" ---------------------------------------------------
+" TODO: choose a snippet plugin
+" 代码片段  未测试
+" ---------------------------------------------------
+"  {
+" Plugin 'Shougo/neosnippet.vim'
+" Plugin 'msanders/snipmate.vim'
+" Plugin 'spf13/snipmate-snippets'
+"  }
+
+" ---------------------------------------------------
+" undotree: invoke by <Leader>u
+" 撤消管理 在窗口中展示vim撤消记录
+" ---------------------------------------------------
+"  {
+Plugin 'mbbill/undotree'
+
+nnoremap <leader>u :UndotreeToggle<CR>
+let g:undotree_SetFocusWhenToggle=1
+let g:undotree_WindowLayout = 4
+
+" NOTE: this will prevent undotree closed then jump to minibufexpl
+function! g:CloseUndotree()
+    call UndotreeHide()
+    call ex#window#goto_edit_window()
+endfunction
+
+function g:Undotree_CustomMap()
+    if has('gui_running')
+        nnoremap <silent> <script> <buffer> <ESC> :call g:CloseUndotree()<CR>
+    else
+        nnoremap <silent> <script> <buffer> <leader><ESC> :call g:CloseUndotree()<CR>
+    endif
+endfunction
+"  }
+
+" ---------------------------------------------------
+" tabular: invoke by <leader>= alignment-character
+" 自动对齐功能 编写json文档帮助比较大
+" 未测试
+" ---------------------------------------------------
+"  {
+" Plugin 'godlygeek/tabular'
+
+" nnoremap <silent> <leader>= :call g:Tabular(1)<CR>
+" xnoremap <silent> <leader>= :call g:Tabular(0)<CR>
+" function! g:Tabular(ignore_range) range
+    " let c = getchar()
+    " let c = nr2char(c)
+    " if a:ignore_range == 0
+        " exec printf('%d,%dTabularize /%s', a:firstline, a:lastline, c)
+    " else
+        " exec printf('Tabularize /%s', c)
+    " endif
+" endfunction
+"  }
+
+" ---------------------------------------------------
+" vim-easymotion: invoke by <leader><leader> w,b,e,ge,f,F,h,i,j,k,/
+" 增强光标移动命令
+" ---------------------------------------------------
+"  {
+" ,,w   当前光标向下按单词头显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,b   当前光标向上按单词头显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,e   当前光标向下按单词尾显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,ge   当前光标向上按单词尾显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,f   当前光标向后查找字符显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,F   当前光标向前查找字符显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,h   当前光标向左按分隔符显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,l   当前光标向右按分隔符显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,k   当前光标向上按行显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,j   当前光标向下按行显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+" ,,/   全文搜索给搜索结果显示跳转字符 输入跳转字符自动跳转到跳转字符显示位置
+"
+Plugin 'Lokaltog/vim-easymotion'
+
+map <leader><leader>/ <Plug>(easymotion-sn)
+omap <leader><leader>/ <Plug>(easymotion-tn)
+map <leader><leader>j <Plug>(easymotion-j)
+map <leader><leader>k <Plug>(easymotion-k)
+map <leader><leader>l <Plug>(easymotion-lineforward)
+map <leader><leader>h <Plug>(easymotion-linebackward)
+let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+"  }
+
+" ---------------------------------------------------
+" LargeFile 快速打开大文件
+" 打开100M(默认)以上的文件，会自动关闭事件、高亮和回退功能
+" ---------------------------------------------------
+"  {
+Plugin 'vim-scripts/LargeFile'
+"设置大于等于5M的文件为大文件
+let g:LargeFile= 5
+"  }
+
+" ---------------------------------------------------
+" vim-better-whitespace  检测有效字符行未空格
+" ---------------------------------------------------
+"  {
+Plugin 'ntpeters/vim-better-whitespace'
+"设置快捷键去除本文本所有行末空格
+nnoremap <unique> ,ws :StripWhitespace<CR>
+
+"  }
+
+"====================================================
+
+"Plugin 'vim-nb-seq'
+
+" ---------------------------------------------------
+" 个人常用设置
+" ---------------------------------------------------
+"Plugin 'kyo_misc'
+
+" ---------------------------------------------------
+" Vim 模拟黑客帝国的屏保
+" ---------------------------------------------------
+"Plugin 'kyo_matrix'
+
+" ---------------------------------------------------
+" grep 查找文件
+" ---------------------------------------------------
+"  {
+" Plugin 'kyo_grep'
+" 指定文件或目录查找关键词出现的行
+" nnoremap <silent> <F3> :Rgrep<CR>
+"  }
+
+" ---------------------------------------------------
+" 用于切换C/C++头文件
+" ---------------------------------------------------
+" Plugin 'kyo_a'
+" :A     ---切换头文件并独占整个窗口
+" :AV    ---切换头文件并垂直分割窗口
+" :AS    ---切换头文件并水平分割窗口
+" nnoremap <silent> <F12> :AV<CR>
+
+" ---------------------------------------------------
+" herp二次开发编写的脚本 依赖herp项目
+" kyo 本人开发
+" ---------------------------------------------------
+" Plugin 'kyo_herp'
+
+" ---------------------------------------------------
+" 记录vim打开文件历史，并且可以快速打开
+" ---------------------------------------------------
+" Plugin 'kyo_mru'
+"let MRU_File='/root/.vim/config/_vim_mru_files'  "把记录保存在哪
+"let MRU_Max_Entries=10                          "最多保存多少条记录
+"let MRU_Window_Height=8                         "设置MRU窗口高度
+"let MRU_Use_Current_Window=0                     "设置是否让MRU窗口独点一页
+"映射F2打开和关闭MRU窗口，bufloaded是判断缓冲是否加载
+" map <expr> <F2> bufloaded("__MRU_Files__")?"q":":MRU\<cr>"
+
+" ---------------------------------------------------
+" 快速编写html代码
+" ---------------------------------------------------
+"Plugin 'zencoding'
+"html Zencoding 快捷键设置
+"let g:user_zen_leader_key = '<C-Y>'
+
+" ---------------------------------------------------
+" ex-cref: invoke by <leader>cr
+" C语言函数辅助功能
+" 未测试
+" ---------------------------------------------------
+"  {
+" Plugin 'exvim/ex-cref'
+
+" this is modified for default c syntax highlight settings
+" make it don't highlight error pattern
+" let c_gnu = 1
+" let c_no_curly_error = 1
+" let c_no_bracket_error = 1
+"  }
+
+" ---------------------------------------------------
+" echofunc
+" C/C++ 输入(时自动输出函数的原型在状态栏里
+" 依赖ctags
+" ---------------------------------------------------
+"  Plugin 'echofunc'
+  " let g:EchoFuncKeyNext = '<F2>'
+  " let g:EchoFuncKeyPrev = '<F3>'
+
+" ---------------------------------------------------
+" javascomplete  java库补全功能
+" ---------------------------------------------------
+"  {
+"  Plugin 'javascomplete'
+"  autocmd FileType java set omnifunc=javacomplete#Complete
+"  inoremap <C-S-J> <C-X><C-O>
+"  }
+
+"====================================================
+" web developer
+
+" ---------------------------------------------------
+" ex-typescript typescript语法高亮 缩进
+" ---------------------------------------------------
+" Plugin 'exvim/ex-typescript'
+
+" ---------------------------------------------------
+" emmet-vim  html辅助编写
+" ---------------------------------------------------
+"  {
+ Plugin 'mattn/emmet-vim'
+
+" make sure emmet only enable in html,css files
+ let g:user_emmet_install_global = 0
+ autocmd FileType html,css EmmetInstall
+"  }
+
+" ---------------------------------------------------
+" vim-indent-guides: invoke by <leader>ig
+" 未测试 html 缩进相关
+" ---------------------------------------------------
+"  {
+" Plugin 'nathanaelkane/vim-indent-guides'
+" let g:indent_guides_guide_size = 1
+"  }
+
+" ---------------------------------------------------
+" vim-javascript javascript语法高亮 缩进
+" ---------------------------------------------------
+" Plugin 'pangloss/vim-javascript'
+
+" ---------------------------------------------------
+" vim-coffee-script  coffee语法高亮 缩进
+" ---------------------------------------------------
+" Plugin 'kchmck/vim-coffee-script'
+
+" ---------------------------------------------------
+" vim-html html排版对齐
+" ---------------------------------------------------
+" Plugin 'exvim/ex-indenthtml.vim'
+
+" ---------------------------------------------------
+" vim-css3-syntax css3语法高亮
+" ---------------------------------------------------
+" Plugin 'hail2u/vim-css3-syntax'
+
+" ---------------------------------------------------
+" vim-less css less语法高亮缩进
+" ---------------------------------------------------
+" Plugin 'groenewege/vim-less'
+
+" ---------------------------------------------------
+" vim-stylus  nodejs语法高亮缩进
+" ---------------------------------------------------
+" Plugin 'wavded/vim-stylus'
+
+" ---------------------------------------------------
+" vim-markdown
+" 轻量级标记语言 写作排版语言 语法高亮 缩进
+" ---------------------------------------------------
+"  {
+Plugin 'plasticboy/vim-markdown'
+
+let g:vim_markdown_initial_foldlevel=9999
+"  }
