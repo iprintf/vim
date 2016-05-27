@@ -408,7 +408,7 @@ nnoremap <unique> <leader>bs :CtrlPBuffer<CR>
 " Plugin 'mattn/webapi-vim'
 " Plugin 'mattn/gist-vim'
 
-"  Plugin 'kyo_git'
+"  Plugin 'iprintf/vim-git'
 "
 " ---------------------------------------------------
 " vim-surround: invoke when you select words and press 's'
@@ -750,17 +750,17 @@ nnoremap <unique> ,ws :StripWhitespace<CR>
 
 "====================================================
 
-"Plugin 'vim-nb-seq'
+"Plugin 'iprintf/vim-nb-seq'
 
 " ---------------------------------------------------
 " 个人常用设置
 " ---------------------------------------------------
-"Plugin 'kyo_misc'
+"Plugin 'iprintf/vim-misc'
 
 " ---------------------------------------------------
 " Vim 模拟黑客帝国的屏保
 " ---------------------------------------------------
-"Plugin 'kyo_matrix'
+"Plugin 'iprintf/matrix'
 
 " ---------------------------------------------------
 " grep 查找文件
