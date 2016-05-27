@@ -76,3 +76,9 @@
 [submodule "config/.vim/bundle/emmet-vim"]
 	path = config/.vim/bundle/emmet-vim
 	url = http://github.com/mattn/emmet-vim.git
+[submodule "config/.vim/bundle/vim-git"]
+	path = config/.vim/bundle/vim-git
+	url = https://github.com/iprintf/vim-git.git
+[submodule "config/.vim/bundle/vim-misc"]
+	path = config/.vim/bundle/vim-misc
+	url = https://github.com/iprintf/vim-misc.git
