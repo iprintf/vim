@@ -82,3 +82,6 @@
 [submodule "config/.vim/bundle/vim-misc"]
 	path = config/.vim/bundle/vim-misc
 	url = https://github.com/iprintf/vim-misc.git
+[submodule "config/.vim/bundle/matrix"]
+	path = config/.vim/bundle/matrix
+	url = https://github.com/iprintf/matrix.git
