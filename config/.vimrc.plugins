@@ -39,12 +39,12 @@ nnoremap <unique> <leader>ve :call exconfig#edit_cur_vimentry ()<CR>
 "  {
 Plugin 'exvim/ex-utility'
 
-nnoremap <unique> <silent> <Leader>bd :EXbd<CR>
-nnoremap <unique> <silent> <C-l> :EXbn<CR>
-nnoremap <unique> <silent> <C-h> :EXbp<CR>
-nnoremap <unique> <silent> <C-Tab> :EXbalt<CR>
-nnoremap <unique> <silent> <Leader><Tab> :EXsw<CR>
-nmap <unique> <silent> <Leader><Esc> :EXgp<CR><ESC>
+" nnoremap <unique> <silent> <Leader>bd :EXbd<CR>
+" nnoremap <unique> <silent> <C-l> :EXbn<CR>
+" nnoremap <unique> <silent> <C-h> :EXbp<CR>
+" nnoremap <unique> <silent> <C-Tab> :EXbalt<CR>
+" nnoremap <unique> <silent> <Leader><Tab> :EXsw<CR>
+" nmap <unique> <silent> <Leader><Esc> :EXgp<CR><ESC>
 "  }
 
 " ---------------------------------------------------
@@ -87,7 +87,7 @@ call exgsearch#register_hotkey( 102, 0, '<leader><S-f>', ":GS ", 'Shortcut for :
 "  {
 Plugin 'exvim/ex-tags'
 
-call extags#register_hotkey( 100, 0, '<leader>ts', ":EXTagsToggle<CR>", 'Toggle tag select window.' )
+call extags#register_hotkey( 100, 0, '<leader>es', ":EXTagsToggle<CR>", 'Toggle tag select window.' )
 call extags#register_hotkey( 101, 0, '<leader>]', ":EXTagsCWord<CR>", 'Tag select current word.' )
 " DISABLE: nnoremap <unique> <leader>] :exec 'ts ' . expand('<cword>')<CR>
 "  }
