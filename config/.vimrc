@@ -697,8 +697,10 @@ nmap cM :%s/\r$//g<CR>:noh<CR>
 "  复制粘贴
 " -----------------------------------------------------------------------------
 "相当于window下的复制粘贴, 必须要安装gnome-vim才有效
-"vnoremap <silent> y "+y
-"vnoremap <silent> p "+p
+if (g:isGUI)
+    vnoremap <silent> y "+y
+    vnoremap <silent> p "+p
+endif
 
 "文件之间复制粘贴
 if (g:islinux)
