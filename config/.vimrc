@@ -700,6 +700,7 @@ nmap cM :%s/\r$//g<CR>:noh<CR>
 if (g:isGUI)
     vnoremap <silent> y "+y
     vnoremap <silent> p "+p
+    nnoremap <silent> p "+p
 endif
 
 "文件之间复制粘贴
