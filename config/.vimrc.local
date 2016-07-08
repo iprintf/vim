@@ -11,6 +11,15 @@ function! GetDateTime()
     return strftime("%Y-%m-%d %H:%M")
 endfunction
 
+"获取指定字符重复次数的字符串
+function! GetRepeatChar(char, count)
+    let str = ''
+	for a in range(a:count)
+        let str = str.a:char
+	endfor
+    return str
+endfunction
+
 " -----------------------------------------------------------------------------
 "  其它
 " -----------------------------------------------------------------------------
@@ -25,6 +34,10 @@ if (g:islinux)
 else
     nnoremap ,pwd i<C-R>=getcwd().'\'.GetFileName()<ESC><CR>
 endif
+
+"插入分割线
+nnoremap ,kl i<C-R>=GetRepeatChar('-', 79)<ESC><CR>
+nnoremap ,kg i<C-R>=GetRepeatChar('=', 79)<ESC><CR>
 
 "自动给函数加括号
 let @q="o{}ioj"
