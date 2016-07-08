@@ -15,7 +15,7 @@
 	url = https://github.com/exvim/ex-vimentry.git
 [submodule "config/.vim/bundle/ex-project"]
 	path = config/.vim/bundle/ex-project
-	url = https://github.com/exvim/ex-project.git
+	url = https://github.com/iprintf/ex-project.git
 [submodule "config/.vim/bundle/ex-gsearch"]
 	path = config/.vim/bundle/ex-gsearch
 	url = https://github.com/exvim/ex-gsearch.git
