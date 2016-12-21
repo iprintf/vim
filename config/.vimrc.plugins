@@ -65,7 +65,7 @@ Plugin 'exvim/ex-vimentry'
 " ---------------------------------------------------
 Plugin 'exvim/ex-project'
 
-nnoremap ,exp   :EXProjectToggle<CR>
+nnoremap ,E   :EXProjectToggle<CR>
 
 " ---------------------------------------------------
 " ex-gsearch
