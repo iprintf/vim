@@ -2,10 +2,15 @@
 
 install_dir=~/.kyo
 
-function err_exit()
-{
+function err_exit() {
     echo $1
     exit 1
+}
+
+function php_manual() {
+    vimDocPath=$install_dir/vim/.vim/bundle/vim-misc/
+    vimDocFile=$install_dir/vim/.vim/bundle/vim-misc/doc.tar.bz2
+    test -e "$vimDocFile" && tar -xf $vimDocFile -C $vimDocPath
 }
 
 ! vim --version | grep 7.4 &> /dev/null \
@@ -21,6 +26,7 @@ test ! -e $install_dir && mkdir $install_dir
 test -e $install_dir/vim && rm $install_dir/vim -rf
 
 /bin/cp config $install_dir/vim -rf || err_exit "安装失败"
+php_manual
 
 ln -s $install_dir/vim/.vim ~/.vim
 ln -s $install_dir/vim/.vimrc ~/.vimrc
