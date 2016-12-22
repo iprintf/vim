@@ -39,7 +39,7 @@ nnoremap <unique> <leader>ve :call exconfig#edit_cur_vimentry ()<CR>
 "  {
 Plugin 'exvim/ex-utility'
 
-" nnoremap <unique> <silent> <Leader>bd :EXbd<CR>
+nnoremap <unique> <silent> <Leader>bd :EXbd<CR>
 " nnoremap <unique> <silent> <C-l> :EXbn<CR>
 " nnoremap <unique> <silent> <C-h> :EXbp<CR>
 " nnoremap <unique> <silent> <C-Tab> :EXbalt<CR>
@@ -51,7 +51,7 @@ Plugin 'exvim/ex-utility'
 " ex-aftercolor
 " exvim通过此插件动态更新配色
 " ---------------------------------------------------
-Plugin 'exvim/ex-aftercolors'
+" Plugin 'exvim/ex-aftercolors'
 
 " ---------------------------------------------------
 " ex-vimentry
@@ -74,9 +74,16 @@ nnoremap ,E   :EXProjectToggle<CR>
 "  {
 Plugin 'exvim/ex-gsearch'
 
-call exgsearch#register_hotkey( 100, 0, '<leader>gs', ":EXGSearchToggle<CR>", 'Toggle global search window.' )
+"设置显示搜索结果栏高度
+let g:ex_gsearch_winsize = 10
+"设置space调节结果栏最大高度
+let g:ex_gsearch_winsize_zoom = 20
+"是否显示帮助信息
+let g:ex_gsearch_enable_help = 0
+
+call exgsearch#register_hotkey( 100, 0, '<leader>G', ":EXGSearchToggle<CR>", 'Toggle global search window.' )
 call exgsearch#register_hotkey( 101, 0, '<leader>gg', ":EXGSearchCWord<CR>", 'Search current word.' )
-call exgsearch#register_hotkey( 102, 0, '<leader><S-f>', ":GS ", 'Shortcut for :GS' )
+call exgsearch#register_hotkey( 102, 0, '<leader>gs', ":GS ", 'Shortcut for :GS' )
 "  }
 
 " ---------------------------------------------------
@@ -87,7 +94,14 @@ call exgsearch#register_hotkey( 102, 0, '<leader><S-f>', ":GS ", 'Shortcut for :
 "  {
 Plugin 'exvim/ex-tags'
 
-call extags#register_hotkey( 100, 0, '<leader>es', ":EXTagsToggle<CR>", 'Toggle tag select window.' )
+"设置显示搜索结果栏高度
+let g:ex_tags_winsize = 10
+"设置space调节结果栏最大高度
+let g:ex_tags_winsize_zoom = 20
+"是否显示帮助信息
+let g:ex_tags_enable_help = 0
+
+call extags#register_hotkey( 100, 0, '<leader>T', ":EXTagsToggle<CR>", 'Toggle tag select window.' )
 call extags#register_hotkey( 101, 0, '<leader>]', ":EXTagsCWord<CR>", 'Tag select current word.' )
 " DISABLE: nnoremap <unique> <leader>] :exec 'ts ' . expand('<cword>')<CR>
 "  }
@@ -141,7 +155,7 @@ call exqfix#register_hotkey( 101, 0, '<leader>qq', ":EXQFixPaste<CR>", 'Open qui
 "  {
 Plugin 'exvim/ex-hierarchy'
 
- nnoremap <unique> <leader>hv :EXHierarchyCWord<CR>
+ " nnoremap <unique> <leader>hv :EXHierarchyCWord<CR>
 "  }
 
 " ---------------------------------------------------
@@ -153,7 +167,7 @@ Plugin 'exvim/ex-hierarchy'
 Plugin 'exvim/ex-taglist'
 
 " F8:  Switch on/off TagList
-nnoremap <unique> <silent> <F8> :TlistToggle<CR>
+nnoremap <unique> <silent> ,L :TlistToggle<CR>
 
 
 "设定ctags程序路径
@@ -389,11 +403,23 @@ Plugin 'altercation/vim-colors-solarized'
 " ---------------------------------------------------
 "  {
 Plugin 'kien/ctrlp.vim'
+
+"设置ctrl+p运行的命令
+let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_working_path_mode = ''
 let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:10,results:10'
 let g:ctrlp_follow_symlinks = 2
+"设置需要过滤的文件
+let g:ctrlp_custom_ignore = {
+    \'dir': '\v[\/]\.(git|hg|svn|rvm)$',
+    \'file': '\v[\/]\.(exe|so|dll|zip|tar|gz|pyc)$'
+    \}
 let g:ctrlp_max_files = 0 " Unset cap of 10,000 files so we find everything
-nnoremap <unique> <leader>bs :CtrlPBuffer<CR>
+let g:ctrlp_mruf_max = 100
+"当前缓冲列表选择
+nnoremap <unique> <leader>B :CtrlPBuffer<CR>
+"最近打开文档历史选择
+nnoremap <unique> <leader>F :CtrlPMRUFiles<CR>
 "  }
 
 " ---------------------------------------------------
@@ -733,9 +759,9 @@ let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
 " 打开100M(默认)以上的文件，会自动关闭事件、高亮和回退功能
 " ---------------------------------------------------
 "  {
-Plugin 'vim-scripts/LargeFile'
+" Plugin 'vim-scripts/LargeFile'
 "设置大于等于5M的文件为大文件
-let g:LargeFile= 5
+" let g:LargeFile= 5
 "  }
 
 " ---------------------------------------------------
@@ -760,7 +786,7 @@ Plugin 'iprintf/vim-misc'
 " ---------------------------------------------------
 " Vim 模拟黑客帝国的屏保
 " ---------------------------------------------------
-Plugin 'iprintf/matrix'
+" Plugin 'iprintf/matrix'
 
 " ---------------------------------------------------
 " grep 查找文件
