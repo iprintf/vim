@@ -44,6 +44,15 @@ kyo vim config project
         ,mh     清除当前行的标记
         ,ma     清除所有书签标记
 
+        小写标记颜色
+            hi default ShowMarksHLl ctermfg=LightGray guifg=LightGray
+        大写标记颜色
+            hi default ShowMarksHLu ctermfg=LightGray guifg=LightGray
+        所有标记颜色
+            hi default ShowMarksHLo ctermfg=LightGray guifg=LightGray
+        多标记颜色
+            hi default ShowMarksHLm ctermfg=LightGray guifg=LightGray
+
     模糊查找文件(ctrlp.vim)
         ctrl + p / :CtrlP       调出文件搜索列表窗口，实时模糊匹配输入
         ,B / :CtrlPBuffer       调出当前打开文件列表容器搜索
@@ -88,7 +97,30 @@ kyo vim config project
          ,,s   全文搜索给搜索结果显示跳转字符，不会高亮搜索结果
          ,,/   全文搜索给搜索结果显示跳转字符
 
-    vim-better-whitespace
+    显示/去除行尾空白字符(vim-better-whitespace)
+        ,ws / :StripWhitespace  去除行尾空白字符
+
+    快速对齐(vim-easy-align)
+        对齐规则(分隔字符): <space> = : . | & # , "
+        设置快捷键:
+            可视模式为回车
+                vmap <Enter> <Plug>(EasyAlign)
+            普通模式为ga
+                nmap ga <Plug>(EasyAlign)
+
+        用法:
+            选取多行(vip/gv)后:
+            <Enter>=            对齐等号表达式(PHP数组)
+            <Enter>:            对齐冒号表达式(JSON)
+            <Enter><space>      首个空格左对齐
+            <Enter>2<space>     第二个空格左对齐
+            <Enter>-<space>     倒数第一个空格左对齐
+            <Enter>-2<space>    倒数第二个空格左对齐
+            <Enter>*<space>     所有空格左对齐
+            <Enter><Enter>...   两个回车代表右对齐与前面命令组合一致
+
+            在普通模式下使用ga后跟以前命令可对当前行进行对齐操作
+
     emmet
     vim-markdown
 
