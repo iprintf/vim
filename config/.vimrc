@@ -306,10 +306,10 @@ if g:isGUI
     "根据不同环境设置默认显示字体的函数
     function! s:set_gui_font()
         if has('gui_gtk2')
-            if getfontname( 'DejaVu Sans Mono for Powerline' ) != ''
-                set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 12
-            elseif getfontname( 'DejaVu Sans Mono' ) != ''
-                set guifont=DejaVu\ Sans\ Mono\ 12
+            if getfontname( 'DejaVu Sans Mono\ Bold' ) != ''
+                set guifont=DejaVu\ Sans\ Mono\ Bold\ 18
+            elseif getfontname( 'DejaVu Sans Mono for Powerline' ) != ''
+                set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 18
             else
                 set guifont=Luxi\ Mono\ 12
             endif
