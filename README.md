@@ -32,7 +32,7 @@ kyo vim config project
         ,T / :EXTagsToggle           开关符号查找窗口
         ,] / :EXTagsCWord tag        查找符号并显示到查找窗口
 
-    符号列表(ex-taglist)
+    符号列表(ex-tagbar)
         ,L  / :EXTListToggle         开关符号列表
 
     增强%功能(ex-matchit)
