@@ -20,6 +20,27 @@ function! GetRepeatChar(char, count)
     return str
 endfunction
 
+function! KyoExecStdout(...)
+    if a:0
+        let cmd = a:1
+    else
+        let cmd = '/tmp/run.sh'
+    endif
+    let str = getline(line('.'))
+    if stridx(str, '''') != -1
+        echomsg 'signal quote is not allowed!'
+        return
+    endif
+    let tmpfile = system('mktemp | tr -d "\n"')
+    silent exec '! path='.tmpfile.' '.cmd.' '''.str.''''
+    silent exec 'normal dd'
+    silent exec 'r '.tmpfile
+    silent exec '! rm -f ' . tmpfile
+    silent exec 'redraw!'
+endfunction
+
+nmap ,x :call KyoExecStdout()<CR><CR>
+
 " -----------------------------------------------------------------------------
 "  其它
 " -----------------------------------------------------------------------------
