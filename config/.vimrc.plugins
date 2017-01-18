@@ -373,7 +373,6 @@ let g:NERDCustomDelimiters = {
 "  {
 " Plugin 'Shougo/neosnippet.vim'
 " Plugin 'msanders/snipmate.vim'
-" Plugin 'spf13/snipmate-snippets'
 "  }
 
 " ---------------------------------------------------
@@ -475,8 +474,8 @@ Plugin 'mattn/emmet-vim'
 " 轻量级标记语言 写作排版语言 语法高亮 缩进
 " ---------------------------------------------------
 "  {
-Plugin 'plasticboy/vim-markdown'
+" Plugin 'plasticboy/vim-markdown'
 
-let g:vim_markdown_initial_foldlevel=9999
+" let g:vim_markdown_initial_foldlevel=9999
 "  }
 "
