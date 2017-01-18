@@ -20,7 +20,7 @@ set tags=~/.vim/systags
 " set tags+=./tags                            "向上级目录递归查找tags文件（好像只有在Windows下才有用）
 
 "解决ctrl+]跳转默认跳到第一个关键词
-nmap <C-]>  :ts <C-R>=expand("<cword>")<CR><CR>
+" nmap <C-]>  :ts <C-R>=expand("<cword>")<CR><CR>
 
 "set tags+=~/.vim/tmptags
 "获取输入路径创建ctags
