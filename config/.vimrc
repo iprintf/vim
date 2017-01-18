@@ -103,7 +103,8 @@ scriptencoding utf-8
 "设置新文件的<EOL>格式 unix为换行符，dos为回车+换行符
 set fileformat=unix
 "文件自动识别行结束符的集合
-set fileformats=unix,dos,mac
+" set fileformats=unix,dos,mac
+set fileformats=unix
 
 " ==============================================================================
 " Bundle 插件配置
