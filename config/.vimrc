@@ -552,7 +552,7 @@ set nf=
     "marker     标志用于指定折叠
     "syntax     语言高亮项目指定折叠(巨坑会造成VIM卡顿)
     "diff       没有改变的文本构成折叠
-set foldmethod=marker
+set foldmethod=indent
 "设置折叠开始和结束标志
 set foldmarker={,}
 "设置折叠级别 高于此级别的折叠会被关闭
