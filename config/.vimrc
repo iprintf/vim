@@ -72,8 +72,8 @@ else
     if s:uname == "Darwin\n"
         silent exec 'language en_US'
     "linux 终端
-    else
-        silent exec 'language en_US.utf8'
+    " else
+        " silent exec 'language en_US.utf8'
     endif
 endif
 
