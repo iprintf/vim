@@ -48,7 +48,10 @@ function! KyoHtmlSet()
     setlocal softtabstop=2
 endfunction
 
-autocmd FileType html,css,vue,pug exec "call KyoHtmlSet()"
+autocmd BufRead *.vue set ft=vue
+autocmd BufRead *.stylus set ft=stylus
+autocmd BufRead *.pug set ft=pug
+autocmd FileType html,css,vue,pug,stylus exec "call KyoHtmlSet()"
 
 " -----------------------------------------------------------------------------
 "  其它
