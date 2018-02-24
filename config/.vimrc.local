@@ -41,6 +41,15 @@ endfunction
 
 nmap ,x :call KyoExecStdout()<CR><CR>
 
+" HTML CSS文件的缩进
+function! KyoHtmlSet()
+    setlocal shiftwidth=2
+    setlocal tabstop=2
+    setlocal softtabstop=2
+endfunction
+
+autocmd FileType html,css,vue,pug exec "call KyoHtmlSet()"
+
 " -----------------------------------------------------------------------------
 "  其它
 " -----------------------------------------------------------------------------
