@@ -655,7 +655,7 @@ map Q gq
 
 "关闭搜索高亮
 " nnoremap <F8> :let @/=""<CR>
-nnoremap ,nh :let @/=""<CR>
+nnoremap <leader>nh :let @/=""<CR>
 "
 "用空格键来开关折叠
 nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
@@ -681,9 +681,11 @@ nmap cS :%s/\s\+$//g<CR>:noh<CR>
 " 常规模式下输入 cM 清除行尾 ^M 符号
 nmap cM :%s/\r$//g<CR>:noh<CR>
 
-" 开关复制模式, 复制保留原文格式
-nmap ,sp :set paste<CR>
-nmap ,np :set nopaste<CR>
+" 开关粘贴模式(保留粘贴原文格式)
+nmap <leader>pa :set paste!<CR>
+
+" 开关行号显示
+nmap <leader>nu :set number!<CR>
 
 " -----------------------------------------------------------------------------
 "  自动补全（,",{,［
