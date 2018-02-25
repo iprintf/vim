@@ -170,7 +170,7 @@ else
 endif
 "
 colorscheme solarized
-"colorscheme exlightgray
+" colorscheme exlightgray
 "
 "注释颜色
 " hi Comment  guifg=#999999
