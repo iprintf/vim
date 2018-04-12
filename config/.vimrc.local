@@ -39,7 +39,85 @@ function! KyoExecStdout(...)
     silent exec 'redraw!'
 endfunction
 
+function! KyoJavaApiDoc()
+    silent exec '! japi "\<'.expand("<cword>").'\>" w3m'
+    silent exec 'redraw!'
+endfunction
+
 nmap ,x :call KyoExecStdout()<CR><CR>
+nmap ,jd :call KyoJavaApiDoc()<CR><CR>
+
+function! KyoCtrlFcitx(op)
+    if a:op == 1
+        silent exec '! fcitx-remote -o'
+    else
+        silent exec '! fcitx-remote -c'
+    endif
+    silent exec 'redraw!'
+endfunction
+
+"退出插入模式时调用函数执行关闭输入法
+" autocmd InsertLeave * call KyoCtrlFcitx(0)
+"进入插入模式时调用函数执行激活输入法
+" autocmd InsertEnter * call KyoCtrlFcitx(1)
+
+function! KyoMySQLCmdView()
+    let file = GetFileName()
+    silent exec ':w'
+
+    if bufwinnr(2) == -1
+        " silent exec 'botright 15 split  -MySQL-'
+        silent exec 'botright split  -MySQL-'
+    elseif winnr() == 1
+        silent exec 'wincmd w'
+    endif
+    setlocal modifiable
+    silent exec 'normal ggVGx'
+    silent exec ':r! ksql run $(realpath '.file.')'
+    setlocal buflisted
+    setlocal bufhidden=delete
+    setlocal buftype=nofile
+    setlocal nomodifiable
+    setlocal noswapfile
+    setlocal nowrap
+    silent exec 'wincmd w'
+endfunction
+
+nnoremap ,sq :call KyoMySQLCmdView()<CR><CR>
+
+function! KyoHtmlSet()
+    setlocal shiftwidth=2
+    setlocal tabstop=2
+    setlocal softtabstop=2
+endfunction
+
+autocmd BufRead *.vue set ft=vue
+autocmd BufRead *.stylus set ft=stylus
+autocmd BufRead *.pug set ft=pug
+autocmd FileType html,css,vue,stylus,pug exec "call KyoHtmlSet()"
+
+function! KyoCopySel()
+    silent exec '! cat /tmp/kyo.vim | xclip -i -sel clipboard'
+    silent exec 'redraw!'
+endfunction
+
+vnoremap 'y :w! /tmp/kyo.vim<CR>:call KyoCopySel()<CR><CR>
+
+
+" function GetVisualSelection()
+    " let [lnum1, col1] = getpos("'<")[1:2]
+    " let [lnum2, col2] = getpos("'>")[1:2]
+    " let lines = getline(lnum1, lnum2)
+    " let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
+    " let lines[0] = lines[0][col1 - 1:]
+    " echo join(lines, '\n')
+" endfunction
+
+" vnoremap 'y :xclip -i -sel clipboard<CR>
+
+set foldmethod=indent
+
+nnoremap 'p :r! xclip -o -sel clipboard<CR>
 
 " -----------------------------------------------------------------------------
 "  其它
@@ -66,3 +144,8 @@ let @q="o{}ioj"
 "javacomplete 自己写的脚本自动编译或运行java程序
 nnoremap ,jr :! clear && jvr <C-R>=GetFileName()<CR><CR>
 
+" autocmd FileType java setlocal omnifunc=javacomplete#Complete
+
+nnoremap ,pr :!clear ; python3 %<CR>
+
+nnoremap <F5> :! chromium-browser %<CR>
