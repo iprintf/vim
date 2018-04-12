@@ -61,22 +61,6 @@ endif
 "总是使用英文菜单
 set langmenu=none
 
-"对所有VIM编辑都使用英文菜单 语言环境为英文
-if g:iswindows
-    silent exec 'language english'
-elseif g:isosx
-    silent exec 'language en_US'
-else
-    let s:uname= system("uname -a")
-    "mac 终端
-    if s:uname == "Darwin\n"
-        silent exec 'language en_US'
-    "linux 终端
-    else
-        silent exec 'language en_US.utf8'
-    endif
-endif
-
 " 设置VIM内部字符编码为utf-8
 set encoding=utf-8
 "在终端下使用的字符编码
@@ -170,7 +154,7 @@ else
 endif
 "
 colorscheme solarized
-"colorscheme exlightgray
+" colorscheme exlightgray
 "
 "注释颜色
 " hi Comment  guifg=#999999
@@ -263,7 +247,6 @@ if &term =~ 'xterm'
     "所有模式下都支持鼠标
     set mouse=a
 endif
-
 
 " ==============================================================================
 " 选项设置 (set all)
@@ -438,15 +421,6 @@ if (g:iswindows && g:isGUI)
     language messages zh_CN.UTF-8
 endif
 
-" -----------------------------------------------------------------------------
-"  < gvimfullscreen 工具配置 > 请确保已安装了工具
-" -----------------------------------------------------------------------------
-" 用于 Windows Gvim 全屏窗口，可用 F11 切换
-" 全屏后再隐藏菜单栏、工具栏、滚动条效果更好
-if (g:iswindows && g:isGUI)
-    map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
-endif
-
 " =============================================================================
 "                     << windows 下解决 Quickfix 乱码问题 >>
 " =============================================================================
@@ -552,7 +526,7 @@ set nf=
     "marker     标志用于指定折叠
     "syntax     语言高亮项目指定折叠(巨坑会造成VIM卡顿)
     "diff       没有改变的文本构成折叠
-set foldmethod=marker
+set foldmethod=indent
 "设置折叠开始和结束标志
 set foldmarker={,}
 "设置折叠级别 高于此级别的折叠会被关闭
@@ -598,7 +572,6 @@ set grepprg=lid\ -Rgrep\ -s
 "识别grep命令输出格式
 set grepformat=%f:%l:%m
 
-
 " ==============================================================================
 " 自动命令设置(Auto Command)
 " ==============================================================================
@@ -615,19 +588,15 @@ if has('autocmd')
         " Desc: Buffer 缓冲区操作事件
         " ------------------------------------------------------------------
 
-        " when editing a file, always jump to the last known cursor position.
         " 当编辑一个文件时， 光标总是会跳转到上一次修改保存的位置
         " line("'\"") 获取上一次编辑退出的光标所在行号
         " line("$") 获取当前文件最后一行号
         " 当最后修改保存的光标失效或在事件处理程序中则不跳转光标
         " (当gvim删除一个文件时)
-        " don't do it when the position is invalid or when inside an event handler
-        " (happens when dropping a file on gvim).
         au BufReadPost *
                     \ if line("'\"") > 0 && line("'\"") <= line("$") |
                     \   exe "normal g`\"" |
                     \ endif
-        " NOTE: ctags find the tags file from the current path instead of the path of currect file
         " 设置ctags查找tags文件到当前目录下查找
         au BufNewFile,BufEnter * set cpoptions+=d
         " 确保每种文件都语法高亮显示
@@ -655,7 +624,7 @@ map Q gq
 
 "关闭搜索高亮
 " nnoremap <F8> :let @/=""<CR>
-nnoremap ,nh :let @/=""<CR>
+nnoremap <leader>nh :let @/=""<CR>
 "
 "用空格键来开关折叠
 nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
@@ -680,6 +649,12 @@ nmap cS :%s/\s\+$//g<CR>:noh<CR>
 
 " 常规模式下输入 cM 清除行尾 ^M 符号
 nmap cM :%s/\r$//g<CR>:noh<CR>
+
+" 开关粘贴模式(保留粘贴原文格式)
+nmap <leader>pa :set paste!<CR>
+
+" 开关行号显示
+nmap <leader>nu :set number!<CR>
 
 " -----------------------------------------------------------------------------
 "  自动补全（,",{,［
@@ -712,47 +687,6 @@ else
     vnoremap  "y    :w! $VIM/tmp/kyo.vim<CR>
     nnoremap  "y    :w! $VIM/tmp/kyo.vim<CR>
     nnoremap  "p    :r  $VIM/tmp/kyo.vim<CR>
-endif
-
-"光标所在单词与下一个单词进入交换位置
-nnoremap <silent> ,sw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<cr><c-o>
-
-" -----------------------------------------------------------------------------
-"  < vimtweak 工具配置 > 请确保以已装了工具
-" -----------------------------------------------------------------------------
-" 这里只用于窗口透明与置顶
-" 常规模式下 Ctrl + Up（上方向键） 增加不透明度，Ctrl + Down（下方向键） 减少不透明度，<Leader>t 窗口置顶与否切换
-if (g:iswindows && g:isGUI)
-    let g:Current_Alpha = 255
-    let g:Top_Most = 0
-    func! Alpha_add()
-        let g:Current_Alpha = g:Current_Alpha + 10
-        if g:Current_Alpha > 255
-            let g:Current_Alpha = 255
-        endif
-        call libcallnr("vimtweak.dll","SetAlpha",g:Current_Alpha)
-    endfunc
-    func! Alpha_sub()
-        let g:Current_Alpha = g:Current_Alpha - 10
-        if g:Current_Alpha < 155
-            let g:Current_Alpha = 155
-        endif
-        call libcallnr("vimtweak.dll","SetAlpha",g:Current_Alpha)
-    endfunc
-    func! Top_window()
-        if  g:Top_Most == 0
-            call libcallnr("vimtweak.dll","EnableTopMost",1)
-            let g:Top_Most = 1
-        else
-            call libcallnr("vimtweak.dll","EnableTopMost",0)
-            let g:Top_Most = 0
-        endif
-    endfunc
-
-    "快捷键设置
-    map <c-up> :call Alpha_add()<CR>
-    map <c-down> :call Alpha_sub()<CR>
-    map <leader>t :call Top_window()<CR>
 endif
 
 " ==============================================================================

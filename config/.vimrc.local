@@ -119,6 +119,15 @@ set foldmethod=indent
 
 nnoremap 'p :r! xclip -o -sel clipboard<CR>
 
+" HTML CSS文件的缩进
+function! KyoHtmlSet()
+    setlocal shiftwidth=2
+    setlocal tabstop=2
+    setlocal softtabstop=2
+endfunction
+
+autocmd FileType html,css,vue,pug,stylus exec "call KyoHtmlSet()"
+
 " -----------------------------------------------------------------------------
 "  其它
 " -----------------------------------------------------------------------------
