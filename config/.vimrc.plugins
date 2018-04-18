@@ -354,6 +354,8 @@ nmap <F7> :NERDTreeToggle<CR>
 " <Leader>ca 在/*...*/与//这两种注释方式中切换, 单行注释符切换
 " <Leader>cA 行尾注释
 " <Leader>cs 批量注释
+" <Leader>cb 对齐注释符
+" <Leader>cl 对齐注释符
 Plugin 'scrooloose/nerdcommenter'
 
 "在左注释符之后，右注释符之前留有空格
@@ -361,6 +363,7 @@ let g:NERDSpaceDelims = 1
 let g:NERDRemoveExtraSpaces = 1
 let g:NERDCustomDelimiters = {
             \ 'vimentry': { 'left': '--' },
+            \ 'vue': { 'left': '//' }
             \ }
 "map <unique> <F11> <Plug>NERDCommenterAlignBoth
 "map <unique> <C-F11> <Plug>NERDCommenterUncomment
