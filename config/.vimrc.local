@@ -61,36 +61,13 @@ endfunction
 "进入插入模式时调用函数执行激活输入法
 " autocmd InsertEnter * call KyoCtrlFcitx(1)
 
-function! KyoMySQLCmdView()
-    let file = GetFileName()
-    silent exec ':w'
-
-    if bufwinnr(2) == -1
-        " silent exec 'botright 15 split  -MySQL-'
-        silent exec 'botright split  -MySQL-'
-    elseif winnr() == 1
-        silent exec 'wincmd w'
-    endif
-    setlocal modifiable
-    silent exec 'normal ggVGx'
-    silent exec ':r! ksql run $(realpath '.file.')'
-    setlocal buflisted
-    setlocal bufhidden=delete
-    setlocal buftype=nofile
-    setlocal nomodifiable
-    setlocal noswapfile
-    setlocal nowrap
-    silent exec 'wincmd w'
-endfunction
-
-nnoremap ,sq :call KyoMySQLCmdView()<CR><CR>
-
 function! KyoHtmlSet()
     setlocal shiftwidth=2
     setlocal tabstop=2
     setlocal softtabstop=2
 endfunction
 
+" HTML CSS文件的缩进
 autocmd BufRead *.vue set ft=vue
 autocmd BufRead *.stylus set ft=stylus
 autocmd BufRead *.pug set ft=pug
@@ -103,30 +80,7 @@ endfunction
 
 vnoremap 'y :w! /tmp/kyo.vim<CR>:call KyoCopySel()<CR><CR>
 
-
-" function GetVisualSelection()
-    " let [lnum1, col1] = getpos("'<")[1:2]
-    " let [lnum2, col2] = getpos("'>")[1:2]
-    " let lines = getline(lnum1, lnum2)
-    " let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
-    " let lines[0] = lines[0][col1 - 1:]
-    " echo join(lines, '\n')
-" endfunction
-
-" vnoremap 'y :xclip -i -sel clipboard<CR>
-
-set foldmethod=indent
-
 nnoremap 'p :r! xclip -o -sel clipboard<CR>
-
-" HTML CSS文件的缩进
-function! KyoHtmlSet()
-    setlocal shiftwidth=2
-    setlocal tabstop=2
-    setlocal softtabstop=2
-endfunction
-
-autocmd FileType html,css,vue,pug,stylus exec "call KyoHtmlSet()"
 
 " -----------------------------------------------------------------------------
 "  其它
