@@ -27,7 +27,7 @@ function! KyoComplete(findstart, base, list)
     " 定位单词的开始处
     let line = getline('.')
     let start = col('.') - 1
-    while start > 0 && line[start - 1] =~ '\a'
+    while start > 0 && line[start - 1] =~ '\w'
       let start -= 1
     endwhile
     return start
