@@ -35,6 +35,15 @@ endif
 
 let s:title = '-MySQL-'
 
+function! s:appendContent(content)
+  try
+    call append(line('.'), split(a:content, '\n'))
+    silent exec 'normal dd'
+  catch /.*/
+  endtry
+  return ''
+endfunction
+
 " 生成私有配置
 function! KyoMySQLGenConfig()
   let s = "-- Kyo MySQL IDE\n
@@ -46,13 +55,17 @@ function! KyoMySQLGenConfig()
 \@Port ".g:kyo_sql_port."\n
 \@DataBase ".g:kyo_sql_db."\n
 \KYO MySQL IDE Config */"
-  call append(line('.'), split(s, '\n'))
-  return ''
+  return s:appendContent(s)
 endfunction
 
 " 根据内容给全局配置变量赋值
 function! s:assignConfig(config)
-  let [name, value] = split(a:config)
+  try
+    let [name, value] = split(a:config)
+  catch /.*/
+    return
+  endtry
+
   if name == "@Host"
     let g:kyo_sql_host = value
   elseif name == "@User"
@@ -73,8 +86,10 @@ function! s:parseConfig(content)
   if type(a:content) == 3
     let start = match(a:content, '\c\/\*'.re)
     let end = match(a:content, '\c'.re.'\*\/')
-    let config = a:content[start + 1 : end - 1]
-    unlet a:content[start : end]
+    if start != -1 && end != -1
+      let config = a:content[start + 1 : end - 1]
+      unlet a:content[start : end]
+    endif
   else
     let start = search('\/\*'.re, 'n') + 1
     let end = search(re.'\*\/', 'n') - 1
@@ -97,11 +112,20 @@ function! s:clearComment(content_list)
   return join(newlist)
 endfunction
 
+function! s:createDisplayWin()
+  " silent exec 'botright 15 split '.s:title
+  silent exec 'botright split  '.s:title
+  setlocal buflisted
+  setlocal bufhidden=hide
+  setlocal buftype=nofile
+  setlocal noswapfile
+  setlocal nowrap
+endfunction
+
 " 跳转到显示窗口
 function! s:gotoDisplayWin()
   if len(bufname(s:title)) == 0
-    " silent exec 'botright 15 split '.s:title
-    silent exec 'botright split  '.s:title
+    call s:createDisplayWin()
   elseif bufname('%') != s:title
     if bufwinnr(bufname(s:title)) == -1
       silent exec 'ba'
@@ -130,18 +154,15 @@ function! KyoMySQLCmdView(isVisual)
   let cmd .= " -t <<< '".content."'"
   " call append(line('$'), cmd)
   silent exec ':r! '.cmd
-  setlocal buflisted
-  setlocal bufhidden=hide
-  setlocal buftype=nofile
   setlocal nomodifiable
-  setlocal noswapfile
-  setlocal nowrap
   silent exec 'wincmd w'
 endfunction
 
 " 关闭和开启显示窗口
 function! KyoMySQLWindowToggle()
-  if bufwinnr(bufname(s:title)) == -1
+  if len(bufname(s:title)) == 0
+    call s:createDisplayWin()
+  elseif bufwinnr(bufname(s:title)) == -1
     silent exec ':ba'
   else
     if bufname('%') != s:title
@@ -163,17 +184,26 @@ function! s:mysqlExec(sql, fmt)
     let cmd .= " -t "
   endif
   let cmd .= " <<< '".a:sql."'"
-  return system(cmd)
+  try
+    let out = split(system(cmd), '\n')
+    if out[0] =~ "^mysql:.*Warning"
+      let out = out[1:]
+    endif
+    if out[0] =~ "^Tables_in" || out[0] =~ "^Database"
+      let out = out[1:]
+    endif
+    return out
+  catch /.*/
+    return []
+  endtry
 endfunction
 
 function! KyoCompleteDatabase(findstart, base)
-  let list = split(s:mysqlExec('show databases', 0), '\n')
-  return KyoComplete(a:findstart, a:base, list[1:])
+  return KyoComplete(a:findstart, a:base, s:mysqlExec('show databases', 0))
 endfunction
 
 function! KyoCompleteTable(findstart, base)
-  let list = split(s:mysqlExec('show tables', 0), '\n')
-  return KyoComplete(a:findstart, a:base, list[1:])
+  return KyoComplete(a:findstart, a:base, s:mysqlExec('show tables', 0))
 endfunction
 
 function! TriggerComplete(name)
@@ -308,8 +338,7 @@ function! KyoSQLAbbr(content)
   catch /.*/
     return ''
   endtry
-  call append(line('.'), split(v, '\n'))
-  return ''
+  return s:appendContent(v)
 endfunction
 
 ab select? <C-R>=KyoSQLAbbr('select')<CR>
