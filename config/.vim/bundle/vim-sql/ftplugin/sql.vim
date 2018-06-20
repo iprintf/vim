@@ -41,6 +41,10 @@ if !exists('g:kyo_sql_append')
   let g:kyo_sql_append = 0
 endif
 
+if !exists('g:kyo_sql_auto_template')
+  let g:kyo_sql_auto_template = 1
+endif
+
 let s:title = '-MySQL-'
 
 function! s:appendContent(content)
@@ -64,6 +68,31 @@ function! KyoMySQLGenConfig()
 \@DataBase ".g:kyo_sql_db."\n
 \KYO MySQL IDE Config */"
   return s:appendContent(s)
+endfunction
+
+" 生成计算执行时间代码
+function! KyoMySQLGenTime()
+let s = "-- 记录起始时间\n
+\set @kyo_time = now();\n
+\\n
+\-- 这里输入你想要运行的代码...\n
+\\n
+\-- 输出执行时间\n
+\select found_rows() '查询行', row_count() '影响行', timestampdiff(microsecond, @kyo_time, now()) / 1000000 '执行时间(秒)';"
+  return s:appendContent(s)
+endfunction
+
+" 创建空文件自动生成模板
+function! KyoMySQLAutoGen()
+  let lastLineNo = line('$')
+  if lastLineNo != 1 || len(getline(lastLineNo)) != 0
+    return
+  endif
+
+  call KyoMySQLGenConfig()
+  silent exec "normal Go"
+  silent exec "normal o"
+  call KyoMySQLGenTime()
 endfunction
 
 " 根据内容给全局配置变量赋值
@@ -238,6 +267,10 @@ endfunction
 
 autocmd QuitPre *.sql exec ':wqall!'
 
+if g:kyo_sql_auto_template
+  autocmd BufEnter *.sql call KyoMySQLAutoGen()
+endif
+
 nnoremap ,Q :call KyoMySQLWindowToggle()<CR><CR>
 
 nnoremap ,sq :call KyoMySQLCmdView(0)<CR><CR>
@@ -246,6 +279,9 @@ inoremap <C-R>m <ESC>:call KyoMySQLCmdView(0)<CR>i
 
 nnoremap ,sc :call KyoMySQLGenConfig()<CR><CR>
 ab kyomysql? <C-R>=KyoMySQLGenConfig()<CR>
+
+nnoremap ,st :call KyoMySQLGenTime()<CR><CR>
+ab kyotime? <C-R>=KyoMySQLGenTime()<CR>
 
 nnoremap <F5> i<C-R>=TriggerComplete('db')<CR>
 inoremap <F5> <C-R>=TriggerComplete('db')<CR>
